@@ -1,9 +1,8 @@
 import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 import validator from "../validator/states";
-import Query from "../database/queries/query";
+import Query from "../database/queries/state";
 
-//add some tests
 class StateController {
   static async addStateData(req, res) {
     const stateData = { ...req.body };

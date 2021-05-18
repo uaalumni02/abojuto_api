@@ -11,6 +11,7 @@ chai.should();
 const { expect } = chai;
 
 const statePath = "/api/state";
+let id;
 
 describe("add state", () => {
   it("should register state", (done) => {
@@ -25,10 +26,23 @@ describe("get all states", () => {
       .request(app)
       .get(statePath)
       .end((err, response) => {
+        id = response.body.data[0].id;
         response.body.should.be.a("object");
         expect(response.body).to.have.nested.property("success").to.eql(true);
         expect(response.body).to.have.nested.property("data[0].name");
 
+        done();
+      });
+  });
+});
+describe(" delete state by id", () => {
+  it("should delete state by id", (done) => {
+    request(app)
+      .delete("/api/state/" + id)
+      .end((err, response) => {
+        expect(response.body).to.have.nested.property("success").to.eql(true);
+        //look at what the response shows why do I have "1"
+        expect(response.body).to.have.nested.property("data").to.eql(1);
         done();
       });
   });
