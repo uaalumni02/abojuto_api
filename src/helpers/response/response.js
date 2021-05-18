@@ -18,5 +18,23 @@ const responseServerError = (res) => {
     message: "internal server error",
   });
 };
+const responseOk = (res, data) => {
+  return res.status(200).json({
+    success: true,
+    data,
+  });
+};
+const responseValidationError = (res, message) => {
+  return res.status(400).json({
+    success: false,
+    message,
+  });
+};
 
-export { responseBadRequest, responseOkCreated, responseServerError };
+export {
+  responseBadRequest,
+  responseOkCreated,
+  responseServerError,
+  responseOk,
+  responseValidationError
+};

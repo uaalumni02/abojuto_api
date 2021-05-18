@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-import stateRoutes from "./routes/state.route";
+import stateRoutes from "./routes/states.route";
 
 router.use("/state", stateRoutes);
 
