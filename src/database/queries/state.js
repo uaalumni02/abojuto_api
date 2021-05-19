@@ -25,6 +25,14 @@ class Query {
       throw error;
     }
   }
+  static async stateById(id) {
+    try {
+      const stateById = await db("states").where({ id }).select();
+      return stateById;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Query;

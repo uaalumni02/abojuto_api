@@ -25,6 +25,21 @@ class StateController {
       return Response.responseServerError(res);
     }
   }
+  static async getStateById(req, res) {
+    const { id } = req.params;
+    try {
+      const { error } = validator.validate({ id });
+      if (error) {
+        return Response.responseValidationError(res, Errors.INVALID_ID);
+      }
+      const stateById = await Query.stateById(id);
+      return stateById.length == 0
+        ? Response.responseNotFound(res, Errors.INVALID_DATA)
+        : Response.responseOk(res, stateById);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
   static async deleteState(req, res) {
     const { id } = req.params;
     try {
@@ -34,7 +49,7 @@ class StateController {
       }
       const stateToDelete = await Query.deleteState(id);
       return !stateToDelete
-        ? Response.responseNotFound(res, Errors.INVALID_MOVIE)
+        ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, stateToDelete);
     } catch (error) {
       return Response.responseServerError(res);

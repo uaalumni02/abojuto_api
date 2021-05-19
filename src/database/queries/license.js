@@ -17,6 +17,15 @@ class Query {
       throw error;
     }
   }
+  static async licenseById(id) {
+    try {
+      const licenseById = await db("license").where({ id }).select();
+      return licenseById;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
+
 
 export default Query;

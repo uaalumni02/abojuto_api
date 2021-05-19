@@ -17,6 +17,14 @@ class Query {
       throw error;
     }
   }
+  static async modalityById(id) {
+    try {
+      const modalityById = await db("modality").where({ id }).select();
+      return modalityById;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Query;
