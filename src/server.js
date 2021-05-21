@@ -17,10 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 import stateRoutes from "./routes/states.route";
 import licenseRoutes from "./routes/license.route";
 import modalityRoutes from "./routes/modality.route";
+import specialtyRoutes from "./routes/specialty.route";
 
 router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
 router.use("/modality", modalityRoutes);
+router.use("/specialty", specialtyRoutes);
 
 app.use("/api", router);
 

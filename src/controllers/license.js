@@ -34,7 +34,7 @@ class LicenseController {
       }
       const licenseById = await Query.licenseById(id);
       return licenseById.length == 0
-        ? Response.responseNotFound(res, Errors.INVALID_MOVIE)
+        ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, licenseById);
     } catch (error) {
       return Response.responseServerError(res);

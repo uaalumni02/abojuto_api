@@ -2,6 +2,21 @@ import db from "../knex";
 
 class Query {
   static async addState(data) {
+    // db.insert([
+    //   { name: 'Ohio', stateId: 22},
+    //   { name: 'Florida', stateId: 25}
+    // ])
+
+    // userId
+    // email
+    // first
+    // last
+    // created
+    // password
+    // phone
+
+    // SLECT user.user_id, userstates.stateid WHERE state.id = 1 OR state = 1 JOIN ON state.user_id = user_id
+
     try {
       const stateInfo = await db.insert(data).returning("*").into("states");
       return stateInfo;
