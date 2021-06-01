@@ -30,11 +30,19 @@ const responseValidationError = (res, message) => {
     message,
   });
 };
+const responseNotFound = (res, message, data = []) => {
+  return res.status(404).json({
+    success: false,
+    message,
+    data
+  });
+};
 
 export {
   responseBadRequest,
   responseOkCreated,
   responseServerError,
   responseOk,
-  responseValidationError
+  responseValidationError,
+  responseNotFound
 };

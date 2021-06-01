@@ -23,7 +23,6 @@ class SupervisorController {
       const getAllSupervisors = await Query.getSupervisors(req);
       return Response.responseOk(res, getAllSupervisors);
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }

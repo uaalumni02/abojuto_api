@@ -6,7 +6,6 @@ class Query {
       const supervisorInfo = await db
         .insert(data)
         .returning([
-          "id",
           "name",
           "about",
           "license",
@@ -24,7 +23,7 @@ class Query {
       const getAllSupervisors = await db
         .select()
         .from("supervisor")
-        .orderBy("id");
+        .orderBy("user_id");
       return getAllSupervisors;
     } catch (error) {
       throw error;
