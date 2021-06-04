@@ -40,7 +40,7 @@ class Query {
   //   //pass params to where clause
   // }
   //rename below to findSupervisors
-  static async SupervisorByStateId(id) {
+  static async FindSupervisor(id) {
     try {
       const SupervisorByState = await db
         .distinct()
