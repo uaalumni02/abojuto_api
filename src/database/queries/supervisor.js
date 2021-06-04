@@ -29,6 +29,17 @@ class Query {
       throw error;
     }
   }
+
+
+  // app.get('/supervisor/search', (req, res) => ) {
+  //   //req.query
+  // }
+  // need new route supervisor/search
+
+  // findSupervisors(params) {
+  //   //pass params to where clause
+  // }
+  //rename below to findSupervisors
   static async SupervisorByStateId(id) {
     try {
       const SupervisorByState = await db
@@ -37,10 +48,10 @@ class Query {
         .from("supervisor")
         .innerJoin(
           "user_states",
-          "supervisor.state_id",
+          "supervisor.user_id",
           "=",
-          "user_states.state_id"
-        ).where({'supervisor.state_id': id })
+          "user_states.user_id"
+        ).where({'user_states.state_id': id })
         // can join speciciality and modality and add in where
       return SupervisorByState;
     } catch (error) {
