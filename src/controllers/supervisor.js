@@ -14,7 +14,7 @@ class SupervisorController {
       const supervisorInfo = await Query.addSupervisor(supervisorData);
       return Response.responseOkCreated(res, supervisorInfo);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return Response.responseServerError(res);
     }
   }
@@ -26,19 +26,20 @@ class SupervisorController {
       return Response.responseServerError(res);
     }
   }
-  static async SearchForSupervisor(req, res) {
-    const { id } = req.params;
+  static async searchForSupervisor(req, res) {
+    let { state: id, license: license } = req.query;
+    // console.log(req.query.license);
     try {
-      // const { error } = validator.validate({ id });
+      // const { error } = validator.validate({ state: id });
       // if (error) {
       //   return Response.responseValidationError(res, Errors.INVALID_ID);
       // }
-      const SupervisorByState = await Query.FindSupervisor(id);
+      const SupervisorByState = await Query.FindSupervisor(id, license);
       return SupervisorByState.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, SupervisorByState);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return Response.responseServerError(res);
     }
   }

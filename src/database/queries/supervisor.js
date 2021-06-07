@@ -39,8 +39,8 @@ class Query {
   // findSupervisors(params) {
   //   //pass params to where clause
   // }
-  //rename below to findSupervisors
-  static async FindSupervisor(id) {
+  static async FindSupervisor(id, license) {
+    console.log(license)
     try {
       const SupervisorByState = await db
         .distinct()

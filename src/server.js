@@ -24,7 +24,10 @@ router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
 router.use("/modality", modalityRoutes);
 router.use("/specialty", specialtyRoutes);
-router.use("/supervisor", supervisorRoutes);
+// router.use("/supervisor/state_id", supervisorRoutes);
+// router.use("/supervisor/", supervisorRoutes);
+router.use("/supervisor/search", supervisorRoutes);
+
 
 app.use("/api", router);
 
