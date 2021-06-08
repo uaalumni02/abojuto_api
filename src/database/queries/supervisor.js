@@ -45,7 +45,16 @@ class Query {
         .where({
           "user_states.state_id": id,
         })
-        .andWhere({ "supervisor.license": license });
+        .modify(function(queryBuilder) {
+          if (license) {
+            queryBuilder.andWhere({"supervisor.license": license })
+          }
+         // .whereIn('user_modality.special', [1, 2, 3])
+
+          // if()
+        })
+        
+       
       // can join speciciality and modality and add in where
       return SupervisorByState;
     } catch (error) {
