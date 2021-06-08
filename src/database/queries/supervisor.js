@@ -30,17 +30,7 @@ class Query {
     }
   }
 
-
-  // app.get('/supervisor/search', (req, res) => ) {
-  //   //req.query
-  // }
-  // need new route supervisor/search
-
-  // findSupervisors(params) {
-  //   //pass params to where clause
-  // }
   static async FindSupervisor(id, license) {
-    console.log(license)
     try {
       const SupervisorByState = await db
         .distinct()
@@ -51,8 +41,12 @@ class Query {
           "supervisor.user_id",
           "=",
           "user_states.user_id"
-        ).where({'user_states.state_id': id })
-        // can join speciciality and modality and add in where
+        )
+        .where({
+          "user_states.state_id": id,
+        })
+        .andWhere({ "supervisor.license": license });
+      // can join speciciality and modality and add in where
       return SupervisorByState;
     } catch (error) {
       throw error;
@@ -62,4 +56,3 @@ class Query {
 
 
 export default Query;
-

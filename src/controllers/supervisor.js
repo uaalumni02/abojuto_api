@@ -35,6 +35,7 @@ class SupervisorController {
       //   return Response.responseValidationError(res, Errors.INVALID_ID);
       // }
       const SupervisorByState = await Query.FindSupervisor(id, license);
+      console.log(SupervisorByState)
       return SupervisorByState.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, SupervisorByState);
