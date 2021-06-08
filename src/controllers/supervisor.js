@@ -27,15 +27,14 @@ class SupervisorController {
     }
   }
   static async searchForSupervisor(req, res) {
-    let { state: id, license: license } = req.query;
-    // console.log(req.query.license);
+    let { state: id, license: license, modality: modality } = req.query;
+    // console.log(req.query.modality);
     try {
       // const { error } = validator.validate({ state: id });
       // if (error) {
       //   return Response.responseValidationError(res, Errors.INVALID_ID);
       // }
-      const SupervisorByState = await Query.FindSupervisor(id, license);
-      console.log(SupervisorByState)
+      const SupervisorByState = await Query.FindSupervisor(id, license, modality);
       return SupervisorByState.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, SupervisorByState);
