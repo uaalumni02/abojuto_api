@@ -30,11 +30,11 @@ class Query {
     }
   }
 
-  static async FindSupervisor(id, license, modality, specialty) {
+  static async FindSupervisor(id, license, modality=[], specialty=[]) {
     try {
       const SupervisorByState = await db
-        .distinct()
-        .select()
+        // .distinct()
+        .select('*')
         .from("supervisor")
         .innerJoin(
           "user_states",
@@ -61,11 +61,11 @@ class Query {
           if (license) {
             queryBuilder.andWhere({ "supervisor.license": license });
           }
-          if (modality) {
-            queryBuilder.whereIn("user_modalities.modality_id", [modality]);
+          if (modality.length) {
+            queryBuilder.whereIn("user_modalities.modality_id", modality);
           }
-          if (specialty) {
-            queryBuilder.whereIn("user_specialties.specialty_id", [specialty]);
+          if (specialty.length) {
+            queryBuilder.whereIn("user_specialties.specialty_id", specialty);
           }
         });
 
