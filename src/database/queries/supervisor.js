@@ -30,11 +30,10 @@ class Query {
     }
   }
 
-  static async FindSupervisor(id, license, modality=[], specialty=[]) {
+  static async FindSupervisor(id, license, modality = [], specialty = []) {
     try {
       const SupervisorByState = await db
-        // .distinct()
-        .select('*')
+        .select("*")
         .from("supervisor")
         .innerJoin(
           "user_states",
@@ -48,6 +47,7 @@ class Query {
           "=",
           "user_modalities.user_id"
         )
+
         .innerJoin(
           "user_specialties",
           "supervisor.user_id",
@@ -68,8 +68,18 @@ class Query {
             queryBuilder.whereIn("user_specialties.specialty_id", specialty);
           }
         });
-
       return SupervisorByState;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async FindSupervisorMod(user_id) {
+    try {
+      const modById = await db("user_modalities")
+        .where({ user_id })
+        .select("modality_id");
+      console.log("from db query", modById);
+      return modById;
     } catch (error) {
       throw error;
     }

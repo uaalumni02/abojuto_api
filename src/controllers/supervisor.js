@@ -26,36 +26,46 @@ class SupervisorController {
     }
   }
   static async searchForSupervisor(req, res) {
-    let {
-      state: id,
-      license,
-      modality,
-      specialty,
-    } = req.query;
+    let { state: id, license, modality, specialty } = req.query;
 
     if (modality) {
-      modality = modality.split(',');
+      modality = modality.split(",");
     }
 
     if (specialty) {
-      specialty = specialty.split(',')
+      specialty = specialty.split(",");
     }
-    
+
     try {
       // const { error } = validator.validate({ state: id });
       // if (error) {
       //   return Response.responseValidationError(res, Errors.INVALID_ID);
       // }
-      const SupervisorByState = await Query.FindSupervisor(
+      let SupervisorByState = await Query.FindSupervisor(
         id,
         license,
         modality,
         specialty
       );
-      return SupervisorByState.length == 0
-        ? Response.responseNotFound(res, Errors.INVALID_DATA)
-        : Response.responseOk(res, SupervisorByState);
+
+      if (SupervisorByState.length) {
+        const withModalities = SupervisorByState.map( (sup) => {
+          // const mod = await Query.FindSupervisorMod(sup.user_id);
+          // console.log('mod', mod)
+          // sup.modality_id = mod;
+          // console.log('sup', sup)
+          return sup
+          // return 
+        })
+
+        return Response.responseOk(res, withModalities)
+      }
+
+      // return SupervisorByState.length == 0
+      //   ? Response.responseNotFound(res, Errors.INVALID_DATA)
+      //   : Response.responseOk(res, SupervisorByState);
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
