@@ -48,18 +48,20 @@ class SupervisorController {
         specialty
       );
 
-     // if (SupervisorByState.length) {
+    
         const withModalities = await Promise.all(SupervisorByState.map(async (sup) => {
           const mod = await Query.FindSupervisorMod(sup.user_id);
-          // console.log('mod', mod)
           sup.modality_id = mod;
-          // console.log('sup', sup)
           return sup
-          // return 
         }))
 
-        // return Response.responseOk(res, withModalities)
-    //  }
+        const withSpecialties = await Promise.all(SupervisorByState.map(async (sup) => {
+          const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
+          sup.specialty_id = specialty;
+          return sup
+        }))
+
+
 
       return SupervisorByState.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_DATA)

@@ -78,8 +78,17 @@ class Query {
       const modById = await db("user_modalities")
         .where({ user_id })
         .select("modality_id");
-      console.log("from db query", modById);
       return modById;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async FindSupervisorSpecialty(user_id) {
+    try {
+      const specialtyById = await db("user_specialties")
+        .where({ user_id })
+        .select("specialty_id");
+      return specialtyById;
     } catch (error) {
       throw error;
     }
