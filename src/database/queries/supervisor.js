@@ -49,11 +49,26 @@ class Query {
         )
 
         .innerJoin(
+          "modality",
+          "user_modalities.modality_id",
+          "=",
+          "modality.modality_id"
+        )
+
+        .innerJoin(
           "user_specialties",
           "supervisor.user_id",
           "=",
           "user_specialties.user_id"
         )
+
+        .innerJoin(
+          "specialty",
+          "user_specialties.specialty_id",
+          "=",
+          "specialty.specialty_id"
+        )
+
         .where({
           "user_states.state_id": id,
         })
