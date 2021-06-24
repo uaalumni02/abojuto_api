@@ -48,12 +48,12 @@ class Query {
           "user_modalities.user_id"
         )
 
-        .innerJoin(
-          "modality",
-          "user_modalities.modality_id",
-          "=",
-          "modality.modality_id"
-        )
+        // .innerJoin(
+        //   "modality",
+        //   "user_modalities.modality_id",
+        //   "=",
+        //   "modality.modality_id"
+        // )
 
         .innerJoin(
           "user_specialties",
@@ -62,12 +62,12 @@ class Query {
           "user_specialties.user_id"
         )
 
-        .innerJoin(
-          "specialty",
-          "user_specialties.specialty_id",
-          "=",
-          "specialty.specialty_id"
-        )
+        // .innerJoin(
+        //   "specialty",
+        //   "user_specialties.specialty_id",
+        //   "=",
+        //   "specialty.specialty_id"
+        // )
 
         .where({
           "user_states.state_id": id,
@@ -90,9 +90,10 @@ class Query {
   }
   static async FindSupervisorMod(user_id) {
     try {
+      //join shoudld be here..remove inner joins I added for specialty and modality
       const modById = await db("user_modalities")
         .where({ user_id })
-        .select("modality_id");
+        .select("modality_id")
       return modById;
     } catch (error) {
       throw error;
@@ -100,6 +101,7 @@ class Query {
   }
   static async FindSupervisorSpecialty(user_id) {
     try {
+        //join shoudld be here.remove inner joins I added for specialty and modality
       const specialtyById = await db("user_specialties")
         .where({ user_id })
         .select("specialty_id");
