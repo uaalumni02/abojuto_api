@@ -88,12 +88,12 @@ class Query {
       throw error;
     }
   }
-  static async FindSupervisorMod(user_id, modality_id) {
+  static async FindSupervisorMod(user_id) {
     try {
       const modById = await db("user_modalities")
-        .innerJoin("modality", "modality.id", "user_modalities.modality_id")
+        .join("modality", "modality.id", "user_modalities.modality_id")
         .where({ user_id })
-        .select("modality")
+        .select("modality");
       return modById;
     } catch (error) {
       throw error;
@@ -101,10 +101,10 @@ class Query {
   }
   static async FindSupervisorSpecialty(user_id) {
     try {
-      //join shoudld be here.remove inner joins I added for specialty and modality
       const specialtyById = await db("user_specialties")
+        .join("specialty", "specialty.id", "user_specialties.specialty_id")
         .where({ user_id })
-        .select("specialty_id");
+        .select("specialty");
       return specialtyById;
     } catch (error) {
       throw error;

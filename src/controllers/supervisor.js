@@ -50,7 +50,7 @@ class SupervisorController {
 
       const withModalities = await Promise.all(
         SupervisorByState.map(async (sup) => {
-          const mod = await Query.FindSupervisorMod(sup.user_id, sup.modality_id);
+          const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
 
           sup.specialty_id = specialty;
@@ -63,7 +63,6 @@ class SupervisorController {
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, withModalities);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
