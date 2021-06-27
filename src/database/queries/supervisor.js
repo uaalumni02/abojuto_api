@@ -88,12 +88,12 @@ class Query {
       throw error;
     }
   }
-  static async FindSupervisorMod(user_id) {
+  static async FindSupervisorMod(user_id, modality_id) {
     try {
-      //join shoudld be here..remove inner joins I added for specialty and modality
       const modById = await db("user_modalities")
+        .innerJoin("modality", "modality.id", "user_modalities.modality_id")
         .where({ user_id })
-        .select("modality_id")
+        .select("modality")
       return modById;
     } catch (error) {
       throw error;
@@ -101,7 +101,7 @@ class Query {
   }
   static async FindSupervisorSpecialty(user_id) {
     try {
-        //join shoudld be here.remove inner joins I added for specialty and modality
+      //join shoudld be here.remove inner joins I added for specialty and modality
       const specialtyById = await db("user_specialties")
         .where({ user_id })
         .select("specialty_id");
