@@ -49,9 +49,12 @@ class SupervisorController {
           const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
 
-          sup.specialty_id = specialty;
+          // sup.specialty_id = specialty;
+
           sup.modality_ids = mod.map((m) => m.modality_id);
           sup.modalities = mod.map((m) => m.modality);
+          sup.specialty_ids = specialty.map((s) => s.specialty_id);
+          sup.specialties = specialty.map((s) => s.specialty);
           return sup;
         })
       );
@@ -59,6 +62,12 @@ class SupervisorController {
       if (modality && modality.length) {
         withModalities = withModalities.filter((rr) => {
           return modality.every((id) => rr.modality_ids.includes(Number(id)));
+        });
+      }
+
+      if (specialty && specialty.length) {
+        withModalities = withModalities.filter((ss) => {
+          return specialty.every((id) => ss.specialty_ids.includes(Number(id)));
         });
       }
 

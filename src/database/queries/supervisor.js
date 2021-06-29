@@ -90,7 +90,7 @@ class Query {
       const specialtyById = await db("user_specialties")
         .join("specialty", "specialty.id", "user_specialties.specialty_id")
         .where({ user_id })
-        .select("specialty");
+        .select("*");
       return specialtyById;
     } catch (error) {
       throw error;
