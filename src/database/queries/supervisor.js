@@ -48,26 +48,12 @@ class Query {
           "user_modalities.user_id"
         )
 
-        // .innerJoin(
-        //   "modality",
-        //   "user_modalities.modality_id",
-        //   "=",
-        //   "modality.modality_id"
-        // )
-
         .innerJoin(
           "user_specialties",
           "supervisor.user_id",
           "=",
           "user_specialties.user_id"
         )
-
-        // .innerJoin(
-        //   "specialty",
-        //   "user_specialties.specialty_id",
-        //   "=",
-        //   "specialty.specialty_id"
-        // )
 
         .where({
           "user_states.state_id": id,
@@ -93,7 +79,7 @@ class Query {
       const modById = await db("user_modalities")
         .join("modality", "modality.id", "user_modalities.modality_id")
         .where({ user_id })
-        .select("modality");
+        .select("*");
       return modById;
     } catch (error) {
       throw error;

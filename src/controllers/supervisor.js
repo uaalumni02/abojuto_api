@@ -37,10 +37,6 @@ class SupervisorController {
     }
 
     try {
-      // const { error } = validator.validate({ state: id });
-      // if (error) {
-      //   return Response.responseValidationError(res, Errors.INVALID_ID);
-      // }
       let SupervisorByState = await Query.FindSupervisor(
         id,
         license,
@@ -48,21 +44,29 @@ class SupervisorController {
         specialty
       );
 
-      const withModalities = await Promise.all(
+      let withModalities = await Promise.all(
         SupervisorByState.map(async (sup) => {
           const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
 
           sup.specialty_id = specialty;
-          sup.modality_id = mod;
+          sup.modality_ids = mod.map((m) => m.modality_id);
+          sup.modalities = mod.map((m) => m.modality);
           return sup;
         })
       );
+
+      if (modality && modality.length) {
+        withModalities = withModalities.filter((rr) => {
+          return modality.every((id) => rr.modality_ids.includes(Number(id)));
+        });
+      }
 
       return SupervisorByState.length == 0
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, withModalities);
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
