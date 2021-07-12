@@ -30,7 +30,8 @@ class Query {
     }
   }
 
-  static async FindSupervisor(id, license, modality = [], specialty = []) {
+  static async FindSupervisor(stateId, license, modality = [], specialty = []) {
+    
     try {
       const SupervisorByState = await db
         .select("*")
@@ -55,10 +56,12 @@ class Query {
           "user_specialties.user_id"
         )
 
-        .where({
-          "user_states.state_id": id,
-        })
+        // console.log('s b s', SupervisorByState)
         .modify(function (queryBuilder) {
+
+          if (stateId) {
+            queryBuilder.where({ "user_states.state_id": stateId });
+          }
           if (license) {
             queryBuilder.andWhere({ "supervisor.license": license });
           }
@@ -96,6 +99,8 @@ class Query {
       throw error;
     }
   }
+  
 }
+
 
 export default Query;

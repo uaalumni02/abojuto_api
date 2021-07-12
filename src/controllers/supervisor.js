@@ -26,7 +26,7 @@ class SupervisorController {
     }
   }
   static async searchForSupervisor(req, res) {
-    let { state: id, license, modality, specialty } = req.query;
+    let { state: stateId, license, modality, specialty } = req.query;
 
     if (modality) {
       modality = modality.split(",");
@@ -38,7 +38,7 @@ class SupervisorController {
 
     try {
       let SupervisorByState = await Query.FindSupervisor(
-        id,
+        stateId,
         license,
         modality,
         specialty
@@ -48,8 +48,6 @@ class SupervisorController {
         SupervisorByState.map(async (sup) => {
           const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
-
-          // sup.specialty_id = specialty;
 
           sup.modality_ids = mod.map((m) => m.modality_id);
           sup.modalities = mod.map((m) => m.modality);
