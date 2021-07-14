@@ -48,11 +48,14 @@ class SupervisorController {
         SupervisorByState.map(async (sup) => {
           const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
+          const licenses = await Query.getUserLicenseCategories(sup.user_id)
 
           sup.modality_ids = mod.map((m) => m.modality_id);
           sup.modalities = mod.map((m) => m.modality);
           sup.specialty_ids = specialty.map((s) => s.specialty_id);
           sup.specialties = specialty.map((s) => s.specialty);
+          sup.licenses = licenses
+          sup.licenseCategoryIds = licenses.map(l => l.category_id)
           return sup;
         })
       );
@@ -67,6 +70,10 @@ class SupervisorController {
         withModalities = withModalities.filter((ss) => {
           return specialty.every((id) => ss.specialty_ids.includes(Number(id)));
         });
+      }
+
+      if (license) {
+        withModalities = withModalities.filter(user => user.licenseCategoryIds.includes(Number(license)))
       }
 
       return SupervisorByState.length == 0
