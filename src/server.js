@@ -19,14 +19,16 @@ import licenseRoutes from "./routes/license.route";
 import modalityRoutes from "./routes/modality.route";
 import specialtyRoutes from "./routes/specialty.route";
 import supervisorRoutes from "./routes/supervisor.route";
+import licenseCategoryRoutes from "./routes/category.route";
+
+
 
 router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
 router.use("/modality", modalityRoutes);
 router.use("/specialty", specialtyRoutes);
-// router.use("/supervisor/state_id", supervisorRoutes);
-// router.use("/supervisor/", supervisorRoutes);
 router.use("/supervisor/search", supervisorRoutes);
+router.use("/category", licenseCategoryRoutes);
 
 
 app.use("/api", router);
