@@ -31,23 +31,16 @@ class Query {
   }
 
   static async getUserLicenseCategories(userId) {
+    console.log("use", userId);
+    const licenses = await db("user_licenses")
+      .select("*")
+      .innerJoin("license", "user_licenses.id", "=", "license.id")
+      .where({ "user_licenses.user_id": userId });
 
-    console.log('use', userId)
-    const licenses = await db('user_licenses')
-      .select('*')
-      .innerJoin(
-        "license",
-        "user_licenses.id",
-        "=",
-        "license.id"
-      )
-      .where({ "user_licenses.user_id": userId })
-
-      return licenses
+    return licenses;
   }
 
   static async FindSupervisor(stateId, license, modality = [], specialty = []) {
-    
     try {
       const SupervisorByState = await db
         .select("*")
@@ -71,20 +64,8 @@ class Query {
           "=",
           "user_specialties.user_id"
         )
-        // .innerJoin(
-        //   "user_specialties",
-        //   "supervisor.user_id",
-        //   "=",
-        //   "user_specialties.user_id"
-        // )
 
-
-        // user - no ,ore license field/column 
-        // user_licenses: userId, licenseId
-        // licenses - id, name, abrrv LCPC, category (LPC)
-        // console.log('s b s', SupervisorByState)
         .modify(function (queryBuilder) {
-
           if (stateId) {
             queryBuilder.where({ "user_states.state_id": stateId });
           }
@@ -125,8 +106,14 @@ class Query {
       throw error;
     }
   }
-  
+  static async supervisorById(user_id) {
+    try {
+      const supervisorById = await db("supervisor").where({ user_id }).select();
+      return supervisorById;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
-
 
 export default Query;

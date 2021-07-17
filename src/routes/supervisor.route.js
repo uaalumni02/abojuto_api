@@ -8,5 +8,6 @@ router.route("/").get(supervisorController.searchForSupervisor);
 router.route("/").post(supervisorController.addSupervisorData);
 router.route("/").get(supervisorController.getAllSupervisors);
 
+router.route("/:id").get(supervisorController.getSupervisorById);
 
 export default router;

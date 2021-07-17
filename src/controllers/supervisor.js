@@ -84,6 +84,18 @@ class SupervisorController {
       return Response.responseServerError(res);
     }
   }
+  static async getSupervisorById(req, res) {
+    const { id } = req.params;
+    try {
+      const supervisorById = await Query.supervisorById(id);
+      return supervisorById.length == 0
+        ? Response.responseNotFound(res, Errors.INVALID_DATA)
+        : Response.responseOk(res, supervisorById);
+    } catch (error) {
+      console.log(error)
+      return Response.responseServerError(res);
+    }
+  }
 }
 
 export default SupervisorController;
