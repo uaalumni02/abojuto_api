@@ -20,8 +20,7 @@ import modalityRoutes from "./routes/modality.route";
 import specialtyRoutes from "./routes/specialty.route";
 import supervisorRoutes from "./routes/supervisor.route";
 import licenseCategoryRoutes from "./routes/category.route";
-
-
+import customerCategoryRoutes from "./routes/customer.route";
 
 router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
@@ -29,7 +28,7 @@ router.use("/modality", modalityRoutes);
 router.use("/specialty", specialtyRoutes);
 router.use("/supervisor/search", supervisorRoutes);
 router.use("/category", licenseCategoryRoutes);
-
+router.use("/customer", customerCategoryRoutes);
 
 app.use("/api", router);
 
