@@ -31,7 +31,6 @@ class Query {
   }
 
   static async getUserLicenseCategories(userId) {
-    console.log("use", userId);
     const licenses = await db("user_licenses")
       .select("*")
       .innerJoin("license", "user_licenses.id", "=", "license.id")
@@ -43,7 +42,7 @@ class Query {
   static async FindSupervisor(stateId, license, modality = [], specialty = []) {
     try {
       const SupervisorByState = await db
-        .select("*")
+      .distinct("supervisor.*")
         .from("supervisor")
         .innerJoin(
           "user_states",
@@ -69,9 +68,6 @@ class Query {
           if (stateId) {
             queryBuilder.where({ "user_states.state_id": stateId });
           }
-          // if (license) {
-          //   queryBuilder.whereIn({ "user_license.category_id": [license] });
-          // }
           if (modality.length) {
             queryBuilder.whereIn("user_modalities.modality_id", modality);
           }
