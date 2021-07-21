@@ -8,14 +8,19 @@ import bcrypt from "../helpers/bcrypt/bcrypt";
 let token = "";
 class CustomerController {
   static async addCustomerData(req, res) {
-    const { password } = req.body;
+    const { email, password } = req.body;
     try {
-      const hash = await bcrypt.hashPassword(password, 10);
-      let customer = { ...req.body, password: hash };
-      customer = await Query.addCustomer(customer);
-      token = Token.sign({ password });
-      const customerData = { ...req.body, password: undefined, token };
-      return Response.responseOkCreated(res, customerData);
+      const customerRegister = await Query.findCustomer(email);
+      if (customerRegister.length > 0) {
+        return Response.responseConflict(res, customerRegister);
+      } else {
+        const hash = await bcrypt.hashPassword(password, 10);
+        let customer = { ...req.body, password: hash };
+        customer = await Query.addCustomer(customer);
+        token = Token.sign({ password });
+        const customerData = { ...req.body, password: undefined, token };
+        return Response.responseOkCreated(res, customerData);
+      }
     } catch (error) {
       return Response.responseServerError(res);
     }

@@ -23,6 +23,14 @@ class Query {
       throw error;
     }
   }
+  static async findCustomer(email) {
+    try {
+      const customer = await db("customers").where({ email }).select("*");
+      return customer;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Query;

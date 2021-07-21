@@ -37,6 +37,12 @@ const responseNotFound = (res, message, data = []) => {
     data
   });
 };
+const responseConflict = (res) => {
+  return res.status(409).json({
+      success: false,
+      message: 'email exist'
+  });
+}
 
 export {
   responseBadRequest,
@@ -44,5 +50,6 @@ export {
   responseServerError,
   responseOk,
   responseValidationError,
-  responseNotFound
+  responseNotFound,
+  responseConflict
 };
