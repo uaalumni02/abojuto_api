@@ -1,6 +1,4 @@
 import * as Response from "../helpers/response/response";
-import Errors from "../helpers/constants/constants";
-import validator from "../validator/customers";
 import Query from "../database/queries/customer";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
@@ -34,7 +32,41 @@ class CustomerController {
     }
   }
 
-  
+  static async userLogin(req, res) {
+    const { email, password } = req.body;
+    try {
+      const user = await Query.findCustomer(email);
+      if (user == null) {
+        return Response.responseBadAuth(res, user);
+      }
+      const isSamePassword = await bcrypt.comparePassword(
+        password,
+        user[0].password
+      );
+      if (isSamePassword) {
+        const token = Token.sign({
+          email: user.email,
+          customer_id: user.customer_id,
+        });
+        const { customer_id, first_name, last_name, email, phone } = user[0];
+        const customerData = {
+          customer_id,
+          first_name,
+          last_name,
+          email,
+          phone,
+          token,
+        };
+
+        return Response.responseOk(res, customerData);
+      } else {
+        return Response.responseBadAuth(res);
+      }
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
+
   static async getAllCustomers(req, res) {
     try {
       const getAllCustomers = await Query.getCustomers(req);

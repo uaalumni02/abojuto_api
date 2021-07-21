@@ -43,6 +43,12 @@ const responseConflict = (res) => {
       message: 'email exist'
   });
 }
+const responseBadAuth = (res) => {
+  return res.status(401).json({
+      success: false,
+      message: 'auth failed',
+  });
+}
 
 export {
   responseBadRequest,
@@ -51,5 +57,6 @@ export {
   responseOk,
   responseValidationError,
   responseNotFound,
-  responseConflict
+  responseConflict,
+  responseBadAuth
 };

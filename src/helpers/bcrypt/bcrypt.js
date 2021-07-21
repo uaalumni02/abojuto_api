@@ -8,7 +8,16 @@ const hashPassword = async (password, rounds) => {
     });
   });
 };
+const comparePassword = async (password, hash) => {
+  return new Promise((resolve, error) => {
+    return bcrypt.compare(password, hash, (err, success) => {
+      if (err) return error({ error: err });
+      return resolve(success);
+    });
+  });
+};
 
 export default {
   hashPassword,
+  comparePassword,
 };
