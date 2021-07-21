@@ -7,7 +7,7 @@ class Query {
         .insert(data)
         .returning("*")
         .into("customers");
-      return customerInfo;
+      return customerInfo[0];
     } catch (error) {
       throw error;
     }

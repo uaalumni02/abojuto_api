@@ -5,7 +5,6 @@ import Query from "../database/queries/customer";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
-let token = "";
 class CustomerController {
   static async addCustomerData(req, res) {
     const { email, password } = req.body;
@@ -15,16 +14,27 @@ class CustomerController {
         return Response.responseConflict(res, customerRegister);
       } else {
         const hash = await bcrypt.hashPassword(password, 10);
-        let customer = { ...req.body, password: hash };
-        customer = await Query.addCustomer(customer);
-        token = Token.sign({ password });
-        const customerData = { ...req.body, password: undefined, token };
+        const customer = { ...req.body, password: hash };
+        const customerResponse = await Query.addCustomer(customer);
+        const { customer_id, first_name, last_name, email, phone } =
+          customerResponse;
+        const token = Token.sign({ customer_id });
+        const customerData = {
+          customer_id,
+          first_name,
+          last_name,
+          email,
+          phone,
+          token,
+        };
         return Response.responseOkCreated(res, customerData);
       }
     } catch (error) {
       return Response.responseServerError(res);
     }
   }
+
+  
   static async getAllCustomers(req, res) {
     try {
       const getAllCustomers = await Query.getCustomers(req);
