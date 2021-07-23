@@ -3,6 +3,8 @@ import customerController from "../controllers/customer";
 
 const router = express.Router();
 
+router.route("/:id").get(customerController.getCustomerById);
+
 router.route("/").post(customerController.addCustomerData);
 router.route("/").get(customerController.getAllCustomers);
 

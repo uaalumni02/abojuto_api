@@ -31,6 +31,16 @@ class Query {
       throw error;
     }
   }
+  static async customerById(customer_id) {
+    try {
+      const customerById = await db("customers")
+        .where({ customer_id })
+        .select();
+      return customerById;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Query;

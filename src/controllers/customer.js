@@ -1,7 +1,9 @@
 import * as Response from "../helpers/response/response";
+import Errors from "../helpers/constants/constants";
 import Query from "../database/queries/customer";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
+import validator from "../validator/customers";
 
 class CustomerController {
   static async addCustomerData(req, res) {
@@ -37,6 +39,7 @@ class CustomerController {
     try {
       const user = await Query.findCustomer(email);
       if (user == null) {
+        //check here for email issue
         return Response.responseBadAuth(res, user);
       }
       const isSamePassword = await bcrypt.comparePassword(
@@ -71,6 +74,23 @@ class CustomerController {
     try {
       const getAllCustomers = await Query.getCustomers(req);
       return Response.responseOk(res, getAllCustomers);
+    } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
+  static async getCustomerById(req, res) {
+    const { id } = req.params;
+    try {
+      const { error } = validator.validate({ id });
+      if (error) {
+        return Response.responseValidationError(res, Errors.INVALID_ID);
+      }
+      const customerById = await Query.customerById(id);
+      if (customerById.length == 1) {
+        return Response.responseOk(res, customerById);
+      } else {
+        return Response.responseNotFound(res, Errors.INVALID_DATA);
+      }
     } catch (error) {
       return Response.responseServerError(res);
     }
