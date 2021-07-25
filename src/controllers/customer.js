@@ -16,8 +16,14 @@ class CustomerController {
         const hash = await bcrypt.hashPassword(password, 10);
         const customer = { ...req.body, password: hash };
         const customerResponse = await Query.addCustomer(customer);
-        const { customer_id, first_name, last_name, email, phone } =
-          customerResponse;
+        const {
+          customer_id,
+          first_name,
+          last_name,
+          email,
+          phone,
+          supervisor_id,
+        } = customerResponse;
         const token = Token.sign({ customer_id });
         const customerData = {
           customer_id,
@@ -26,6 +32,7 @@ class CustomerController {
           email,
           phone,
           token,
+          supervisor_id,
         };
         return Response.responseOkCreated(res, customerData);
       }
@@ -38,8 +45,7 @@ class CustomerController {
     const { email, password } = req.body;
     try {
       const user = await Query.findCustomer(email);
-      if (user == null) {
-        //check here for email issue
+      if (user.length < 1) {
         return Response.responseBadAuth(res, user);
       }
       const isSamePassword = await bcrypt.comparePassword(
