@@ -22,6 +22,7 @@ import supervisorRoutes from "./routes/supervisor.route";
 import licenseCategoryRoutes from "./routes/category.route";
 import customerCategoryRoutes from "./routes/customer.route";
 import timeRoutes from "./routes/time.route";
+import appointmentRoutes from "./routes/appointment.route";
 
 router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
@@ -31,6 +32,7 @@ router.use("/supervisor/search", supervisorRoutes);
 router.use("/category", licenseCategoryRoutes);
 router.use("/customer", customerCategoryRoutes);
 router.use("/time", timeRoutes);
+router.use("/appointment", appointmentRoutes);
 
 app.use("/api", router);
 
