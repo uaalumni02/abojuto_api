@@ -2,10 +2,16 @@ import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 import validator from "../validator/appointments";
 import Query from "../database/queries/appointments";
+import moment from "moment";
 
 class AppointmentController {
   static async addAppointmentData(req, res) {
     const appointmentData = { ...req.body };
+    const appointmentTimestamp = moment(
+      appointmentData.appointmentDate,
+      "YYYY-MM-DD"
+    ).unix();
+    appointmentData.appointmentDate = appointmentTimestamp;
     try {
       const { error } = validator.validate(appointmentData);
       if (error) {
@@ -14,6 +20,7 @@ class AppointmentController {
       const appointmentInfo = await Query.addAppointment(appointmentData);
       return Response.responseOkCreated(res, appointmentInfo);
     } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -27,7 +34,7 @@ class AppointmentController {
   }
   static async getAppointmentByUserorCustomer(req, res) {
     const { id } = req.params;
-   
+console.log(id)
     try {
       const userOrCustomerById = await Query.userOrCustomerById(id);
       if (userOrCustomerById.length == 1) {
@@ -38,6 +45,16 @@ class AppointmentController {
     } catch (error) {
       console.log(error)
       return Response.responseServerError(res);
+    }
+  }
+  static async getAppointmentByDate(req, res) {
+    const { appointmentDate } = req.params;
+    try {
+      const appointmentByDate = await Query.appointmentByDate(appointmentDate);
+      return Response.responseOk(res, appointmentByDate);
+    } catch (error) {
+      console.log(error)
+      return Response.responseNotFound(res);
     }
   }
 }

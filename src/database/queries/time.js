@@ -11,7 +11,7 @@ class Query {
   }
   static async getTimes() {
     try {
-      const getAllTimes = await db.select().from("times").orderBy("time_id");
+      const getAllTimes = await db.select().from("times").orderBy("id");
       return getAllTimes;
     } catch (error) {
       throw error;
