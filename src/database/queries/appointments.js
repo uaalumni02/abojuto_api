@@ -26,9 +26,10 @@ class Query {
         //join
         .join("times", "times.id", "appointments.time_id")
         .join("supervisor", "supervisor.user_id", "appointments.userId")
+        .join("customers", "customers.customer_id", "appointments.customerId")
         .where({ userId })
         .orWhere({ customer_id: userId })
-        .select('*');
+        .select("*");
       return userOrCustomerById;
     } catch (error) {
       throw error;

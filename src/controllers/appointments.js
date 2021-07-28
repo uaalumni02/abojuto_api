@@ -34,7 +34,6 @@ class AppointmentController {
   }
   static async getAppointmentByUserorCustomer(req, res) {
     const { id } = req.params;
-console.log(id)
     try {
       const userOrCustomerById = await Query.userOrCustomerById(id);
       if (userOrCustomerById.length == 1) {
