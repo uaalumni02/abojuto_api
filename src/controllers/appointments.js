@@ -11,6 +11,7 @@ class AppointmentController {
       appointmentData.appointmentDate,
       "YYYY-MM-DD"
     ).unix();
+    console.log(appointmentTimestamp)
     appointmentData.appointmentDate = appointmentTimestamp;
     try {
       const { error } = validator.validate(appointmentData);
