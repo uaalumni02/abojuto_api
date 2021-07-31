@@ -42,7 +42,6 @@ class AppointmentController {
         return Response.responseNotFound(res, Errors.INVALID_DATA);
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }

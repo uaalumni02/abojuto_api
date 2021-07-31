@@ -80,7 +80,6 @@ class SupervisorController {
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, withModalities);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
@@ -92,7 +91,6 @@ class SupervisorController {
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, supervisorById);
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }

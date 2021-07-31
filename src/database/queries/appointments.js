@@ -23,7 +23,6 @@ class Query {
   static async userOrCustomerById(userId) {
     try {
       const userOrCustomerById = await db("appointments")
-        //join
         .join("times", "times.id", "appointments.time_id")
         .join("supervisor", "supervisor.user_id", "appointments.userId")
         .join("customers", "customers.customer_id", "appointments.customerId")
