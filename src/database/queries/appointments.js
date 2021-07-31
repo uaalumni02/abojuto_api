@@ -34,11 +34,13 @@ class Query {
       throw error;
     }
   }
-  static async appointmentByDate(appointmentDate) {
+ 
+  static async appointmentByDate(appointmentDate, userId) {
     try {
       const appointmentByDate = await db("appointments")
         .where({ appointmentDate })
-        .select();
+        .andWhere({userId})
+        .select("*");
       return appointmentByDate;
     } catch (error) {
       throw error;

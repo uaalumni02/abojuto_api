@@ -46,12 +46,11 @@ class AppointmentController {
     }
   }
   static async getAppointmentByDate(req, res) {
-    const { appointmentDate } = req.params;
+    let { date, userId } = req.query;
     try {
-      const appointmentByDate = await Query.appointmentByDate(appointmentDate);
+      const appointmentByDate = await Query.appointmentByDate(date, userId);
       return Response.responseOk(res, appointmentByDate);
     } catch (error) {
-      console.log(error)
       return Response.responseNotFound(res);
     }
   }

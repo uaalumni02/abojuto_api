@@ -3,7 +3,7 @@ import appointmentController from "../controllers/appointments";
 const router = express.Router();
 
 router
-  .route("/:appointmentDate")
+  .route("/")
   .get(appointmentController.getAppointmentByDate);
 
 export default router;
