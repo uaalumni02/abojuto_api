@@ -11,6 +11,8 @@ class Query {
           "license",
           "supervision_credentials",
           "universities",
+          "email",
+          "password",
         ])
         .into("supervisor");
       return supervisorInfo;
@@ -42,7 +44,7 @@ class Query {
   static async FindSupervisor(stateId, license, modality = [], specialty = []) {
     try {
       const SupervisorByState = await db
-      .distinct("supervisor.*")
+        .distinct("supervisor.*")
         .from("supervisor")
         .innerJoin(
           "user_states",
@@ -106,6 +108,14 @@ class Query {
     try {
       const supervisorById = await db("supervisor").where({ user_id }).select();
       return supervisorById;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async findSupervisorByEmail(email) {
+    try {
+      const supervisor = await db("supervisor").where({ email }).select("*");
+      return supervisor;
     } catch (error) {
       throw error;
     }

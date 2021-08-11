@@ -34,12 +34,13 @@ class Query {
       throw error;
     }
   }
- 
+
   static async appointmentByDate(appointmentDate, userId) {
     try {
       const appointmentByDate = await db("appointments")
+        .join("times", "times.id", "appointments.time_id")
         .where({ appointmentDate })
-        .andWhere({userId})
+        .andWhere({ userId })
         .select("*");
       return appointmentByDate;
     } catch (error) {

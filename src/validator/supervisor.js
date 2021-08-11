@@ -6,5 +6,7 @@ const schema = Joi.object({
   license: Joi.string(),
   supervision_credentials: Joi.string(),
   universities: Joi.string(),
+  email: Joi.string(),
+  password: Joi.string(),
 });
 export default schema;

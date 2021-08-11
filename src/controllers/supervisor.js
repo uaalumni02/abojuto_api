@@ -2,21 +2,47 @@ import * as Response from "../helpers/response/response";
 import Errors from "../helpers/constants/constants";
 import validator from "../validator/supervisor";
 import Query from "../database/queries/supervisor";
+import Token from "../helpers/jwt/token";
+import bcrypt from "../helpers/bcrypt/bcrypt";
 
 class SupervisorController {
   static async addSupervisorData(req, res) {
-    const supervisorData = { ...req.body };
+    const { email, password } = req.body;
     try {
-      const { error } = validator.validate(supervisorData);
-      if (error) {
-        return Response.responseBadRequest(res, Errors.VALIDATION);
+      const supervisorData = await Query.findSupervisorByEmail(email);
+      if (supervisorData.length > 0) {
+        return Response.responseConflict(res, supervisorData);
+      } else {
+        const hash = await bcrypt.hashPassword(req.body.password, 10);
+        const supervisor = { ...req.body, password: hash };
+        const supervisorResponse = await Query.addSupervisor(supervisor);
+
+        const {
+          user_id,
+          name,
+          about,
+          license,
+          supervision_credentials,
+          universities,
+          email,
+        } = supervisorResponse;
+        const token = Token.sign({ user_id });
+        const supervisorData = {
+          name,
+          about,
+          license,
+          supervision_credentials,
+          universities,
+          password: token,
+          email,
+        };
+        return Response.responseOkCreated(res, supervisorResponse);
       }
-      const supervisorInfo = await Query.addSupervisor(supervisorData);
-      return Response.responseOkCreated(res, supervisorInfo);
-    } catch (err) {
+    } catch (error) {
       return Response.responseServerError(res);
     }
   }
+
   static async getAllSupervisors(req, res) {
     try {
       const getAllSupervisors = await Query.getSupervisors(req);
@@ -48,14 +74,14 @@ class SupervisorController {
         SupervisorByState.map(async (sup) => {
           const mod = await Query.FindSupervisorMod(sup.user_id);
           const specialty = await Query.FindSupervisorSpecialty(sup.user_id);
-          const licenses = await Query.getUserLicenseCategories(sup.user_id)
+          const licenses = await Query.getUserLicenseCategories(sup.user_id);
 
           sup.modality_ids = mod.map((m) => m.modality_id);
           sup.modalities = mod.map((m) => m.modality);
           sup.specialty_ids = specialty.map((s) => s.specialty_id);
           sup.specialties = specialty.map((s) => s.specialty);
-          sup.licenses = licenses
-          sup.licenseCategoryIds = licenses.map(l => l.category_id)
+          sup.licenses = licenses;
+          sup.licenseCategoryIds = licenses.map((l) => l.category_id);
           return sup;
         })
       );
@@ -73,7 +99,9 @@ class SupervisorController {
       }
 
       if (license) {
-        withModalities = withModalities.filter(user => user.licenseCategoryIds.includes(Number(license)))
+        withModalities = withModalities.filter((user) =>
+          user.licenseCategoryIds.includes(Number(license))
+        );
       }
 
       return SupervisorByState.length == 0

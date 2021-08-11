@@ -11,7 +11,6 @@ class AppointmentController {
       appointmentData.appointmentDate,
       "YYYY-MM-DD"
     ).unix();
-    console.log(appointmentTimestamp)
     appointmentData.appointmentDate = appointmentTimestamp;
     try {
       const { error } = validator.validate(appointmentData);
@@ -21,7 +20,6 @@ class AppointmentController {
       const appointmentInfo = await Query.addAppointment(appointmentData);
       return Response.responseOkCreated(res, appointmentInfo);
     } catch (error) {
-      console.log(error);
       return Response.responseServerError(res);
     }
   }
