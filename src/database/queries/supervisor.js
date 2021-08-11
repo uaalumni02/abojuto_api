@@ -13,6 +13,7 @@ class Query {
           "universities",
           "email",
           "password",
+          "user_id",
         ])
         .into("supervisor");
       return supervisorInfo;

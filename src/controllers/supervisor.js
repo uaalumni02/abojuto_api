@@ -5,6 +5,11 @@ import Query from "../database/queries/supervisor";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
+//need login
+//need to send email when appts are scheduled
+//need to notify when pswd is not correct
+//change route to add supervisor shouldnt be supervisor/search
+
 class SupervisorController {
   static async addSupervisorData(req, res) {
     const { email, password } = req.body;
@@ -16,27 +21,10 @@ class SupervisorController {
         const hash = await bcrypt.hashPassword(req.body.password, 10);
         const supervisor = { ...req.body, password: hash };
         const supervisorResponse = await Query.addSupervisor(supervisor);
-
-        const {
-          user_id,
-          name,
-          about,
-          license,
-          supervision_credentials,
-          universities,
-          email,
-        } = supervisorResponse;
+        const { user_id } = supervisorResponse;
         const token = Token.sign({ user_id });
-        const supervisorData = {
-          name,
-          about,
-          license,
-          supervision_credentials,
-          universities,
-          password: token,
-          email,
-        };
-        return Response.responseOkCreated(res, supervisorResponse);
+
+        return Response.responseOkCreated(res, { token, user_id });
       }
     } catch (error) {
       return Response.responseServerError(res);
