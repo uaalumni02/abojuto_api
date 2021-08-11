@@ -5,7 +5,6 @@ import Query from "../database/queries/supervisor";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
-//need login
 //need to send email when appts are scheduled
 //need to notify when pswd is not correct
 //change route to add supervisor shouldnt be supervisor/search
@@ -27,6 +26,49 @@ class SupervisorController {
         return Response.responseOkCreated(res, { token, user_id });
       }
     } catch (error) {
+      return Response.responseServerError(res);
+    }
+  }
+  static async supervisorLogin(req, res) {
+    const { email, password } = req.body;
+    try {
+      const supervisor = await Query.findSupervisorByEmail(email);
+      if (supervisor.length < 1) {
+        return Response.responseBadAuth(res, supervisor);
+      }
+      const isSamePassword = await bcrypt.comparePassword(
+        password,
+        supervisor[0].password
+      );
+      if (isSamePassword) {
+        const token = Token.sign({
+          email: supervisor.email,
+          user_id,
+        });
+        const {
+          user_id,
+          name,
+          about,
+          license,
+          supervision_credentials,
+          universities,
+        } = supervisor[0];
+        const supervisorData = {
+          user_id,
+          name,
+          about,
+          license,
+          supervision_credentials,
+          universities,
+          token,
+        };
+
+        return Response.responseOk(res, supervisorData);
+      } else {
+        return Response.responseBadAuth(res);
+      }
+    } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }

@@ -10,4 +10,6 @@ router.route("/").get(supervisorController.getAllSupervisors);
 
 router.route("/:id").get(supervisorController.getSupervisorById);
 
+router.post("/login", supervisorController.supervisorLogin);
+
 export default router;
