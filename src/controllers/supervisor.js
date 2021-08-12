@@ -5,9 +5,11 @@ import Query from "../database/queries/supervisor";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
+//does front end stuff still work
 //need to send email when appts are scheduled
 //need to notify when pswd is not correct
-//change route to add supervisor shouldnt be supervisor/search
+//change route to add supervisor shouldnt be supervisor/search when adding user and logging in
+//have route to show scheduled appts and supervisors profile data 
 
 class SupervisorController {
   static async addSupervisorData(req, res) {
@@ -45,21 +47,9 @@ class SupervisorController {
           email: supervisor.email,
           user_id,
         });
-        const {
-          user_id,
-          name,
-          about,
-          license,
-          supervision_credentials,
-          universities,
-        } = supervisor[0];
+        const { user_id } = supervisor[0];
         const supervisorData = {
           user_id,
-          name,
-          about,
-          license,
-          supervision_credentials,
-          universities,
           token,
         };
 
