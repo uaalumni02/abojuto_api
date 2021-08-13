@@ -5,7 +5,6 @@ import Query from "../database/queries/supervisor";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
-//does front end stuff still work
 //need to send email when appts are scheduled
 //need to notify when pswd is not correct
 //change route to add supervisor shouldnt be supervisor/search when adding user and logging in
