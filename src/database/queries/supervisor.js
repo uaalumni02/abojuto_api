@@ -107,7 +107,11 @@ class Query {
   }
   static async supervisorById(user_id) {
     try {
-      const supervisorById = await db("supervisor").where({ user_id }).select();
+      const supervisorById = await db("supervisor").where({ user_id }).select()
+      .join("appointments", "appointments.userId", "supervisor.user_id")
+      .join("times", "times.id", "appointments.time_id" )
+      .where({ user_id })
+      .select("*");
       return supervisorById;
     } catch (error) {
       throw error;

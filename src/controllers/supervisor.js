@@ -8,7 +8,7 @@ import bcrypt from "../helpers/bcrypt/bcrypt";
 //need to send email when appts are scheduled; what about time***
 //need to notify when pswd is not correct ---done
 //change route to add supervisor shouldnt be supervisor/search when adding user and logging in -- done
-//have route to show scheduled appts and supervisors profile data 
+//have route to show scheduled appts and supervisors profile data --done 
 
 class SupervisorController {
   static async addSupervisorData(req, res) {
@@ -129,6 +129,7 @@ class SupervisorController {
       return Response.responseServerError(res);
     }
   }
+  //also shows appts
   static async getSupervisorById(req, res) {
     const { id } = req.params;
     try {
@@ -137,6 +138,7 @@ class SupervisorController {
         ? Response.responseNotFound(res, Errors.INVALID_DATA)
         : Response.responseOk(res, supervisorById);
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
