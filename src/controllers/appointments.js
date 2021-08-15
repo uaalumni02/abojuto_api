@@ -4,7 +4,7 @@ import validator from "../validator/appointments";
 import Query from "../database/queries/appointments";
 import moment from "moment";
 
-import gmail from "node-gmailer";
+import sendHandler from "../helpers/email/mailer";
 
 class AppointmentController {
   static async addAppointmentData(req, res) {
@@ -19,20 +19,10 @@ class AppointmentController {
     const customerMessage =
       "Hi your appointment has been confirmed and is scheduled on " +
       dateString;
-    const recipient = process.env.GMAIL_ADDRESS;
-    const messageData = {
-      subject: "Customer Message",
-      text: customerMessage,
-    };
-    const sendHandler = () => {
-      gmail
-        .send(recipient, messageData)
-        .then((response) => {})
-        .catch((error) => {});
-    };
+
+    sendHandler(customerMessage);
     try {
       const { error } = validator.validate(appointmentData);
-      sendHandler();
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
