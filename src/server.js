@@ -24,17 +24,19 @@ import customerCategoryRoutes from "./routes/customer.route";
 import timeRoutes from "./routes/time.route";
 import appointmentRoutes from "./routes/appointment.route";
 import appointmentDateRoutes from "./routes/appointmentDate.route";
+import supervisorSearchRoutes from "./routes/supervisorSearch.route";
 
 router.use("/state", stateRoutes);
 router.use("/license", licenseRoutes);
 router.use("/modality", modalityRoutes);
 router.use("/specialty", specialtyRoutes);
-router.use("/supervisor/search", supervisorRoutes);
+router.use("/supervisor/search", supervisorSearchRoutes);
 router.use("/category", licenseCategoryRoutes);
 router.use("/customer", customerCategoryRoutes);
 router.use("/time", timeRoutes);
 router.use("/appointment", appointmentRoutes);
 router.use("/appointmentDate", appointmentDateRoutes);
+router.use("/supervisor/", supervisorRoutes);
 
 app.use("/api", router);
 
