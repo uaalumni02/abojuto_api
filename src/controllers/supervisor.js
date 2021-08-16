@@ -5,10 +5,6 @@ import Query from "../database/queries/supervisor";
 import Token from "../helpers/jwt/token";
 import bcrypt from "../helpers/bcrypt/bcrypt";
 
-//need to send email when appts are scheduled; what about time***
-//need to notify when pswd is not correct ---done
-//change route to add supervisor shouldnt be supervisor/search when adding user and logging in -- done
-//have route to show scheduled appts and supervisors profile data --done 
 
 class SupervisorController {
   static async addSupervisorData(req, res) {

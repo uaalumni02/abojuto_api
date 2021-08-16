@@ -20,7 +20,19 @@ class AppointmentController {
       "Hi your appointment has been confirmed and is scheduled on " +
       dateString;
 
+      function sendEmail(appointmentId, type) {
+//need get appt by id
+        // To simplify this function, the parts can also be broken down
+        //Take the appointment ID and fetches all data
+        // Customer name, supervisros name, email adedress of both parties.
+        // Appintment date and time
+
+        // Check if type is new/updated
+        // Send email to both parties
+      }
+
     sendHandler(customerMessage);
+    // send email after post; with the appt id; then fetch data by id 
     try {
       const { error } = validator.validate(appointmentData);
       if (error) {

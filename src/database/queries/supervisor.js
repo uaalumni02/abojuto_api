@@ -110,6 +110,7 @@ class Query {
       const supervisorById = await db("supervisor").where({ user_id }).select()
       .join("appointments", "appointments.userId", "supervisor.user_id")
       .join("times", "times.id", "appointments.time_id" )
+      .join("customers", "customer_id", "appointments.customerId" )
       .where({ user_id })
       .select("*");
       return supervisorById;
