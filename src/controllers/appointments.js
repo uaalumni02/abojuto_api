@@ -14,16 +14,38 @@ class AppointmentController {
       "YYYY-MM-DD"
     ).unix();
     appointmentData.appointmentDate = appointmentTimestamp;
-    const dateString = moment.unix(appointmentTimestamp).format("YYYY-MM-DD");
-
     try {
       const { error } = validator.validate(appointmentData);
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
       const appointmentInfo = await Query.addAppointment(appointmentData);
+      const appointmentId = appointmentInfo[0].id
+
+      await sendAppoinmentEmail(appointmentId)
+
+      async function sendAppoinmentEmail (appointmentId) {
+        const appointmentById = await Query.appointmentById(
+          appointmentId
+        );
+        const dateString = moment
+          .unix(appointmentById[0].appointmentDate)
+          .format("YYYY-MM-DD");
+        const customerMessage =
+          "Hi " +
+          appointmentById[0].first_name +
+          "your appointment has been confirmed and is scheduled on " +
+          dateString +
+          " at " +
+          appointmentById[0].time +
+          " with " +
+          appointmentById[0].name;
+        sendHandler(customerMessage);
+
+      }
       return Response.responseOkCreated(res, appointmentInfo);
     } catch (error) {
+      console.log(error)
       return Response.responseServerError(res);
     }
   }
@@ -62,19 +84,6 @@ class AppointmentController {
     try {
       const appointmentById = await Query.appointmentById(id);
       if (appointmentById.length == 1) {
-        const dateString = moment
-          .unix(appointmentById[0].appointmentDate)
-          .format("YYYY-MM-DD");
-        const customerMessage =
-          "Hi " +
-          appointmentById[0].first_name +
-          "your appointment has been confirmed and is scheduled on " +
-          dateString +
-          " at " +
-          appointmentById[0].time +
-          " with " +
-          appointmentById[0].name;
-        sendHandler(customerMessage);
         return Response.responseOk(res, appointmentById);
       } else {
         return Response.responseNotFound(res, Errors.INVALID_DATA);
