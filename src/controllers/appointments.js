@@ -16,23 +16,6 @@ class AppointmentController {
     appointmentData.appointmentDate = appointmentTimestamp;
     const dateString = moment.unix(appointmentTimestamp).format("YYYY-MM-DD");
 
-    const customerMessage =
-      "Hi your appointment has been confirmed and is scheduled on " +
-      dateString;
-
-    //       function sendEmail(appointmentId, type) {
-    // //need get appt by id
-    //         // To simplify this function, the parts can also be broken down
-    //         //Take the appointment ID and fetches all data
-    //         // Customer name, supervisros name, email adedress of both parties.
-    //         // Appintment date and time
-
-    //         // Check if type is new/updated
-    //         // Send email to both parties
-    //       }
-
-    sendHandler(customerMessage);
-    // send email after post; with the appt id; then fetch data by id
     try {
       const { error } = validator.validate(appointmentData);
       if (error) {
@@ -79,12 +62,24 @@ class AppointmentController {
     try {
       const appointmentById = await Query.appointmentById(id);
       if (appointmentById.length == 1) {
+        const dateString = moment
+          .unix(appointmentById[0].appointmentDate)
+          .format("YYYY-MM-DD");
+        const customerMessage =
+          "Hi " +
+          appointmentById[0].first_name +
+          "your appointment has been confirmed and is scheduled on " +
+          dateString +
+          " at " +
+          appointmentById[0].time +
+          " with " +
+          appointmentById[0].name;
+        sendHandler(customerMessage);
         return Response.responseOk(res, appointmentById);
       } else {
         return Response.responseNotFound(res, Errors.INVALID_DATA);
       }
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
