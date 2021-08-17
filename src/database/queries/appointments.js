@@ -23,7 +23,7 @@ class Query {
   static async userOrCustomerById(userId) {
     try {
       const userOrCustomerById = await db("appointments")
-        .join("times", "times.id", "appointments.time_id")
+        .join("times", "times.timeId", "appointments.time_id")
         .join("supervisor", "supervisor.user_id", "appointments.userId")
         .join("customers", "customers.customer_id", "appointments.customerId")
         .where({ userId })
@@ -38,11 +38,24 @@ class Query {
   static async appointmentByDate(appointmentDate, userId) {
     try {
       const appointmentByDate = await db("appointments")
-        .join("times", "times.id", "appointments.time_id")
+        .join("times", "times.timeId", "appointments.time_id")
         .where({ appointmentDate })
         .andWhere({ userId })
         .select("*");
       return appointmentByDate;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async appointmentById(id) {
+    try {
+      const appointmentById = await db("appointments")
+        .join("customers", "customer_id", "appointments.customerId")
+        .join("supervisor", "supervisor.user_id", "appointments.userId")
+        .join("times", "times.timeId", "appointments.time_id")
+        .where({ id })
+        .select("*");
+      return appointmentById;
     } catch (error) {
       throw error;
     }

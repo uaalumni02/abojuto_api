@@ -20,19 +20,19 @@ class AppointmentController {
       "Hi your appointment has been confirmed and is scheduled on " +
       dateString;
 
-      function sendEmail(appointmentId, type) {
-//need get appt by id
-        // To simplify this function, the parts can also be broken down
-        //Take the appointment ID and fetches all data
-        // Customer name, supervisros name, email adedress of both parties.
-        // Appintment date and time
+    //       function sendEmail(appointmentId, type) {
+    // //need get appt by id
+    //         // To simplify this function, the parts can also be broken down
+    //         //Take the appointment ID and fetches all data
+    //         // Customer name, supervisros name, email adedress of both parties.
+    //         // Appintment date and time
 
-        // Check if type is new/updated
-        // Send email to both parties
-      }
+    //         // Check if type is new/updated
+    //         // Send email to both parties
+    //       }
 
     sendHandler(customerMessage);
-    // send email after post; with the appt id; then fetch data by id 
+    // send email after post; with the appt id; then fetch data by id
     try {
       const { error } = validator.validate(appointmentData);
       if (error) {
@@ -72,6 +72,20 @@ class AppointmentController {
       return Response.responseOk(res, appointmentByDate);
     } catch (error) {
       return Response.responseNotFound(res);
+    }
+  }
+  static async getAppointmentById(req, res) {
+    const { id } = req.params;
+    try {
+      const appointmentById = await Query.appointmentById(id);
+      if (appointmentById.length == 1) {
+        return Response.responseOk(res, appointmentById);
+      } else {
+        return Response.responseNotFound(res, Errors.INVALID_DATA);
+      }
+    } catch (error) {
+      console.log(error)
+      return Response.responseServerError(res);
     }
   }
 }
