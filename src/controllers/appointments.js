@@ -28,24 +28,10 @@ class AppointmentController {
         const appointmentById = await Query.appointmentById(
           appointmentId
         );
-        const dateString = moment
-          .unix(appointmentById[0].appointmentDate)
-          .format("YYYY-MM-DD");
-        const customerMessage =
-          "Hi " +
-          appointmentById[0].first_name +
-          "your appointment has been confirmed and is scheduled on " +
-          dateString +
-          " at " +
-          appointmentById[0].time +
-          " with " +
-          appointmentById[0].name;
-        sendHandler(customerMessage);
-
+        sendHandler(appointmentById[0]);
       }
       return Response.responseOkCreated(res, appointmentInfo);
     } catch (error) {
-      console.log(error)
       return Response.responseServerError(res);
     }
   }
