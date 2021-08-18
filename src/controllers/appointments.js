@@ -4,7 +4,7 @@ import validator from "../validator/appointments";
 import Query from "../database/queries/appointments";
 import moment from "moment";
 
-import sendHandler from "../helpers/email/mailer";
+import sendAppoinmentEmail from "../helpers/email/mailer";
 
 class AppointmentController {
   static async addAppointmentData(req, res) {
@@ -20,16 +20,10 @@ class AppointmentController {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
       const appointmentInfo = await Query.addAppointment(appointmentData);
-      const appointmentId = appointmentInfo[0].id
+      const appointmentId = appointmentInfo[0].id;
 
-      await sendAppoinmentEmail(appointmentId)
+      await sendAppoinmentEmail(appointmentId);
 
-      async function sendAppoinmentEmail (appointmentId) {
-        const appointmentById = await Query.appointmentById(
-          appointmentId
-        );
-        sendHandler(appointmentById[0]);
-      }
       return Response.responseOkCreated(res, appointmentInfo);
     } catch (error) {
       return Response.responseServerError(res);
