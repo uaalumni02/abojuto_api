@@ -59,6 +59,8 @@ class AppointmentController {
       return Response.responseNotFound(res);
     }
   }
+  //look at committed out joins. thats how I can get the supervisor appts. Can use same function and just select what 
+  //to show from database
   static async getAppointmentById(req, res) {
     const { id } = req.params;
     try {

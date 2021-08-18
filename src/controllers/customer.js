@@ -92,7 +92,7 @@ class CustomerController {
         return Response.responseValidationError(res, Errors.INVALID_ID);
       }
       const customerById = await Query.customerById(id);
-      if (customerById.length == 1) {
+      if (customerById.length == 1 || customerById.length > 1) {
         return Response.responseOk(res, customerById);
       } else {
         return Response.responseNotFound(res, Errors.INVALID_DATA);

@@ -34,8 +34,11 @@ class Query {
   static async customerById(customer_id) {
     try {
       const customerById = await db("customers")
+      .join("appointments", "appointments.customerId", "customers.customer_id")
+       .join("times", "times.timeId", "appointments.time_id" )
+          .join("supervisor", "supervisor.user_id", "customers.supervisor_id")
         .where({ customer_id })
-        .select();
+        .select("*");
       return customerById;
     } catch (error) {
       throw error;
