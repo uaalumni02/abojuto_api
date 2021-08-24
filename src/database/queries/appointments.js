@@ -60,5 +60,16 @@ class Query {
       throw error;
     }
   }
+  static async updateAppointment(id, appointmentData) {
+    try {
+      const appointmentToUpdate = await db("appointments")
+        .where({ id })
+        .update(appointmentData)
+        .returning("*");
+      return appointmentToUpdate;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export default Query;

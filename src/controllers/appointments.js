@@ -16,6 +16,7 @@ class AppointmentController {
     appointmentData.appointmentDate = appointmentTimestamp;
     try {
       const { error } = validator.validate(appointmentData);
+      console.log(error);
       if (error) {
         return Response.responseBadRequest(res, Errors.VALIDATION);
       }
@@ -59,18 +60,42 @@ class AppointmentController {
       return Response.responseNotFound(res);
     }
   }
-  //look at committed out joins. thats how I can get the supervisor appts. Can use same function and just select what 
+  //look at committed out joins. thats how I can get the supervisor appts. Can use same function and just select what
   //to show from database
   static async getAppointmentById(req, res) {
     const { id } = req.params;
+    var appointmentId = parseInt(id);
     try {
-      const appointmentById = await Query.appointmentById(id);
+      const appointmentById = await Query.appointmentById(appointmentId);
       if (appointmentById.length == 1) {
         return Response.responseOk(res, appointmentById);
       } else {
         return Response.responseNotFound(res, Errors.INVALID_DATA);
       }
     } catch (error) {
+      console.log(error);
+      return Response.responseServerError(res);
+    }
+  }
+  static async updateAppointmentById(req, res) {
+    const { id } = req.params;
+    var customerId = parseInt(id);
+    const appointmentData = { ...req.body };
+    const appointmentTimestamp = moment(
+      appointmentData.appointmentDate,
+      "YYYY-MM-DD"
+    ).unix();
+    appointmentData.appointmentDate = appointmentTimestamp;
+    try {
+      const appointmentToUpdate = await Query.updateAppointment(
+        customerId,
+        appointmentData
+      );
+      return appointmentToUpdate.length == 0
+        ? Response.responseNotFound(res, Errors.INVALID_DATA)
+        : Response.responseOk(res, appointmentToUpdate);
+    } catch (error) {
+      console.log(error);
       return Response.responseServerError(res);
     }
   }
